@@ -1,5 +1,9 @@
 # 🚀 Code Track - Developer Progress Dashboard
 
+[![GitHub Stars](https://img.shields.io/github/stars/iShinzoo/Code-Track?style=social)](https://github.com/iShinzoo/Code-Track)
+[![GitHub Forks](https://img.shields.io/github/forks/iShinzoo/Code-Track?style=social)](https://github.com/iShinzoo/Code-Track/fork)
+[![GitHub Issues](https://img.shields.io/github/issues/iShinzoo/Code-Track)](https://github.com/iShinzoo/Code-Track/issues)
+
 🌟 **Star this repository to support development and stay updated!** 🌟
 
 A powerful dashboard that tracks and visualizes your coding progress across multiple platforms. Displays real-time statistics from:
@@ -8,7 +12,7 @@ A powerful dashboard that tracks and visualizes your coding progress across mult
 - ![LeetCode](https://img.shields.io/badge/LeetCode-FFA116?style=flat&logo=leetcode&logoColor=black)
 - ![HackerRank](https://img.shields.io/badge/HackerRank-00EA64?style=flat&logo=hackerrank&logoColor=white)
 
-- [Preview Link](https://buy-me-token.vercel.app/)
+- [Preview Link](https://code-track-gamma.vercel.app/)
 
 ![/public/screenshot.png](https://github.com/iShinzoo/Code-Track/blob/main/codeTrackMock.png) 
 
