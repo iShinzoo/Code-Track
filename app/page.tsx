@@ -5,7 +5,8 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowRight, Github, Code, Trophy, Loader2 } from "lucide-react"
+import { ArrowRight, Github, Code, Trophy, Loader2, Star } from "lucide-react"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -22,6 +23,7 @@ export default function Home() {
   })
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isStarred, setIsStarred] = useState(false)
 
   const handleInputChange = (platform: keyof typeof usernames, value: string) => {
     setUsernames((prev) => ({
@@ -41,15 +43,59 @@ export default function Home() {
     if (usernames.hackerrank) params.append("hackerrank", usernames.hackerrank)
 
     // Navigate to dashboard with query params
-    router.push(`/dashboard?${params.toString()}`)
+    setTimeout(() => {
+      router.push(`/dashboard?${params.toString()}`)
+    }, 1000) // Simulate data fetching with a short delay
+  }
+
+  const handleStarRepo = () => {
+    // Toggle star status
+    setIsStarred(!isStarred)
+    
+    // In a real app, you would make an API call to GitHub here
+    if (!isStarred) {
+      window.open("https://github.com/iShinzoo/Code-Track", "_blank")
+    }
   }
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/30">
       <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="flex items-center gap-2 font-bold text-xl">
-          <Code className="h-6 w-6 text-primary" />
-          <span>CodeTrack</span>
+        <div className="container max-w-6xl flex justify-between">
+          <div className="flex items-center gap-2 font-bold text-xl">
+            <Code className="h-6 w-6 text-primary" />
+            <span>CodeTrack</span>
+          </div>
+          <nav>
+            <ul className="flex items-center gap-4">
+              <li>
+                <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex items-center gap-1"
+                  onClick={handleStarRepo}
+                >
+                  <Star className={`h-4 w-4 ${isStarred ? "fill-yellow-400 text-yellow-400" : ""}`} />
+                  <span>{isStarred ? "Star on GitHub" : "Star on GitHub"}</span>
+                </Button>
+              </li>
+            </ul>
+          </nav>
         </div>
       </header>
 
@@ -196,4 +242,3 @@ export default function Home() {
     </div>
   )
 }
-
