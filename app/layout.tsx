@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Analytics } from "@vercel/analytics/react"
 import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
+import ThemeToggle from '@/components/theme-toggle'
 
 export const metadata: Metadata = {
   title: 'Code Track',
@@ -16,9 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <ThemeProvider>
+          <div className="flex justify-end p-4 nab">
+            <ThemeToggle />
+          </div>
+          {children}
+        </ThemeProvider>
         <Analytics />
-        </body>
+      </body>
     </html>
   )
 }
