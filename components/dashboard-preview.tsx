@@ -9,7 +9,7 @@ interface DashboardPreviewProps {
 
 export function DashboardPreview({ className = "" }: DashboardPreviewProps) {
   return (
-    <motion.div className={`w-full max-w-3xl rounded-lg border shadow-xl overflow-hidden bg-background ${className}`}>
+    <motion.div className={`w-full z-[0] max-w-3xl rounded-lg border shadow-xl overflow-hidden bg-background ${className}`}>
       <div className="p-4 border-b bg-muted/30 flex items-center justify-between">
         <h3 className="font-semibold flex items-center gap-2">
           <Code className="h-4 w-4 text-primary" />
