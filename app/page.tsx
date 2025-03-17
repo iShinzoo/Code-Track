@@ -5,14 +5,15 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { ArrowRight, Github, Code, Trophy, Loader2, Star } from "lucide-react"
+import { ArrowRight, Github, Code, Trophy, Loader2, Star, Award, BarChart } from "lucide-react"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { DashboardPreview } from "@/components/dashboard-preview"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function Home() {
   const router = useRouter()
@@ -59,158 +60,178 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/30">
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container max-w-6xl flex justify-between">
-          <div className="flex items-center gap-2 font-bold text-xl">
-            <Code className="h-6 w-6 text-primary" />
-            <span>CodeTrack</span>
-          </div>
-          <nav>
-            <ul className="flex items-center gap-4">
-              <li>
-                <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/features" className="text-sm font-medium hover:text-primary transition-colors">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="flex items-center gap-1"
-                  onClick={handleStarRepo}
-                >
-                  <Star className={`h-4 w-4 ${isStarred ? "fill-yellow-400 text-yellow-400" : ""}`} />
-                  <span>{isStarred ? "Star on GitHub" : "Star on GitHub"}</span>
-                </Button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-
-      <main className="flex-1">
-        <div className="container max-w-6xl px-4 py-12 md:py-24">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+    <div className="container max-w-6xl px-4 py-12 md:py-16">
+          <div className="text-center mb-12">
+            <motion.h1
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="space-y-6"
             >
-              <div className="space-y-2">
-                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                  Track Your Coding Journey
-                </h1>
-                <p className="text-xl text-muted-foreground">
-                  Monitor your progress across LeetCode, GitHub, HackerRank, and more in one unified dashboard.
-                </p>
+              Your Coding Journey, All in One Place
+            </motion.h1>
+            <motion.p
+              className="text-xl text-muted-foreground max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Connect your coding platforms, showcase your skills, and share your progress with the world.
+            </motion.p>
+          </div>
+
+          <motion.div
+            className="grid md:grid-cols-2 gap-12 items-start"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div>
+              <Tabs defaultValue="connect" className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-8">
+                  <TabsTrigger value="connect">Connect Platforms</TabsTrigger>
+                  <TabsTrigger value="features">Features</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="connect" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Connect Your Coding Platforms</CardTitle>
+                      <CardDescription>Enter your usernames for the platforms you want to track</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="github-username" className="flex items-center gap-2">
+                              <Github className="h-4 w-4" />
+                              GitHub Username
+                            </Label>
+                            <Input
+                              id="github-username"
+                              placeholder="e.g., iShinzoo"
+                              value={usernames.github}
+                              onChange={(e) => handleInputChange("github", e.target.value)}
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="leetcode-username" className="flex items-center gap-2">
+                              <Code className="h-4 w-4" />
+                              LeetCode Username
+                            </Label>
+                            <Input
+                              id="leetcode-username"
+                              placeholder="e.g., leetcoder"
+                              value={usernames.leetcode}
+                              onChange={(e) => handleInputChange("leetcode", e.target.value)}
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="hackerrank-username" className="flex items-center gap-2">
+                              <Trophy className="h-4 w-4" />
+                              HackerRank Username
+                            </Label>
+                            <Input
+                              id="hackerrank-username"
+                              placeholder="e.g., hacker123"
+                              value={usernames.hackerrank}
+                              onChange={(e) => handleInputChange("hackerrank", e.target.value)}
+                            />
+                          </div>
+                          </div>
+
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isLoading || Object.values(usernames).every((v) => !v)}
+                        >
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Generating Profile...
+                            </>
+                          ) : (
+                            <>
+                              Create My Coding Profile
+                              <ArrowRight className="ml-2 h-4 w-4" />
+                            </>
+                          )}
+                        </Button>
+                      </form>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="features" className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Why Use CodeTrack?</CardTitle>
+                      <CardDescription>The ultimate platform to showcase your coding journey</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="flex items-start gap-4">
+                        <div className="bg-primary/10 p-2 rounded-lg">
+                          <BarChart className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">Unified Statistics</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Track your progress across multiple coding platforms in one dashboard
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4">
+                        <div className="bg-primary/10 p-2 rounded-lg">
+                          <Code className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">Language Proficiency</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Visualize your programming language expertise based on your repositories and submissions
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4">
+                        <div className="bg-primary/10 p-2 rounded-lg">
+                          <Trophy className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">Achievement Tracking</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Showcase your badges, certifications, and accomplishments from all platforms
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4">
+                        <div className="bg-primary/10 p-2 rounded-lg">
+                          <Share className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">Shareable Profiles</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Generate beautiful cards and PDFs to share your coding journey with others
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-3xl opacity-50" />
+              <div className="relative">
+                <ProfilePreview />
               </div>
-
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                    <Github className="h-5 w-5 text-purple-500" />
-                  </div>
-                  <span className="font-medium">GitHub</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
-                    <Code className="h-5 w-5 text-yellow-500" />
-                  </div>
-                  <span className="font-medium">LeetCode</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
-                    <Trophy className="h-5 w-5 text-green-500" />
-                  </div>
-                  <span className="font-medium">HackerRank</span>
-                </div>
-              </div>
-
-              <Card className="border-primary/20">
-                <CardContent className="p-6">
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <h2 className="text-xl font-semibold">Enter your usernames</h2>
-                    <p className="text-sm text-muted-foreground">
-                      Provide your usernames for the platforms you want to track. We'll fetch real-time data from these
-                      platforms.
-                    </p>
-
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="github-username" className="flex items-center gap-2">
-                          <Github className="h-4 w-4" />
-                          GitHub Username
-                        </Label>
-                        <Input
-                          id="github-username"
-                          placeholder="e.g., octocat"
-                          value={usernames.github}
-                          onChange={(e) => handleInputChange("github", e.target.value)}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="leetcode-username" className="flex items-center gap-2">
-                          <Code className="h-4 w-4" />
-                          LeetCode Username
-                        </Label>
-                        <Input
-                          id="leetcode-username"
-                          placeholder="e.g., leetcoder"
-                          value={usernames.leetcode}
-                          onChange={(e) => handleInputChange("leetcode", e.target.value)}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="hackerrank-username" className="flex items-center gap-2">
-                          <Trophy className="h-4 w-4" />
-                          HackerRank Username
-                        </Label>
-                        <Input
-                          id="hackerrank-username"
-                          placeholder="e.g., hacker123"
-                          value={usernames.hackerrank}
-                          onChange={(e) => handleInputChange("hackerrank", e.target.value)}
-                        />
-                      </div>
-                    </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      disabled={isLoading || (!usernames.github && !usernames.leetcode && !usernames.hackerrank)}
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Fetching Data...
-                        </>
-                      ) : (
-                        <>
-                          Generate Dashboard
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div
+            </div>
+          </motion.div>
+          <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -219,26 +240,192 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-3xl opacity-50" />
               <DashboardPreview className="relative z-10 scale-90 lg:scale-100" />
             </motion.div>
-          </div>
-        </div>
-      </main>
 
-      <footer className="border-t bg-background/80 backdrop-blur-sm">
-        <div className="container flex flex-col sm:flex-row py-6 w-full items-center justify-between gap-4 text-center sm:text-left">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Code className="h-4 w-4" />
-            <p>© 2025 CodeTrack. All rights reserved.</p>
-          </div>
-          <div className="flex gap-4 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-foreground transition-colors">
-              Terms of Service
-            </a>
+          <div className="mt-20">
+            <h2 className="text-2xl font-bold text-center mb-10">Supported Platforms</h2>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+              <PlatformCard
+                name="GitHub"
+                icon={<Github className="h-8 w-8" />}
+                color="bg-gray-900"
+                description="Track repositories, contributions, and stars"
+              />
+              <PlatformCard
+                name="LeetCode"
+                icon={<Code className="h-8 w-8" />}
+                color="bg-yellow-500"
+                description="Monitor problem-solving progress and contest ratings"
+              />
+              <PlatformCard
+                name="HackerRank"
+                icon={<Award className="h-8 w-8" />}
+                color="bg-green-600"
+                description="Showcase certifications and badges"
+              />
+              <PlatformCard
+                name="CodeChef"
+                icon={<Code className="h-8 w-8" />}
+                color="bg-yellow-600"
+                description="Display contest ratings and achievements"
+              />
+              <PlatformCard
+                name="Codeforces"
+                icon={<BarChart className="h-8 w-8" />}
+                color="bg-blue-600"
+                description="Track competitive programming progress"
+              />
+            </div>
           </div>
         </div>
-      </footer>
+    )
+  }
+
+  function Share(props: any) {
+    return (
+      <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <polyline points="16 6 12 2 8 6" />
+      <line x1="12" x2="12" y1="2" y2="15" />
+    </svg>
+  )
+}
+
+function ChefHat(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z" />
+      <line x1="6" x2="18" y1="17" y2="17" />
+    </svg>
+  )
+}
+
+function PlatformCard({
+  name,
+  icon,
+  color,
+  description,
+}: { name: string; icon: React.ReactNode; color: string; description: string }) {
+  return (
+    <motion.div whileHover={{ y: -5 }} className="flex flex-col items-center text-center">
+      <div className={`${color} text-white p-4 rounded-full mb-3`}>{icon}</div>
+      <h3 className="font-medium">{name}</h3>
+      <p className="text-xs text-muted-foreground mt-1">{description}</p>
+    </motion.div>
+  )
+}
+
+function ProfilePreview() {
+  return (
+    <div className="rounded-lg border bg-card text-card-foreground shadow-lg overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-600 to-violet-600 p-6 text-white">
+        <div className="flex items-center gap-4">
+          <img
+            src="/placeholder.svg?height=80&width=80"
+            alt="Profile"
+            className="rounded-full border-4 border-white/20 h-20 w-20 object-cover"
+          />
+          <div>
+            <h2 className="text-2xl font-bold">@your_profile</h2>
+            <p className="text-blue-100">Full Stack Developer</p>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="bg-white/20 text-white text-xs px-2 py-1 rounded-full">3+ Years Coding</div>
+              <div className="bg-white/20 text-white text-xs px-2 py-1 rounded-full">5 Platforms</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-6">
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="bg-muted/40 p-3 rounded-lg text-center">
+            <div className="text-2xl font-bold">1,240</div>
+            <div className="text-xs text-muted-foreground">Contributions</div>
+          </div>
+          <div className="bg-muted/40 p-3 rounded-lg text-center">
+            <div className="text-2xl font-bold">32</div>
+            <div className="text-xs text-muted-foreground">Repositories</div>
+          </div>
+          <div className="bg-muted/40 p-3 rounded-lg text-center">
+            <div className="text-2xl font-bold">248</div>
+            <div className="text-xs text-muted-foreground">Problems Solved</div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <div className="flex justify-between text-sm mb-1">
+              <span>JavaScript</span>
+              <span className="font-medium">65%</span>
+            </div>
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-yellow-500 rounded-full" style={{ width: "65%" }} />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex justify-between text-sm mb-1">
+              <span>TypeScript</span>
+              <span className="font-medium">45%</span>
+            </div>
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-blue-500 rounded-full" style={{ width: "45%" }} />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex justify-between text-sm mb-1">
+              <span>Python</span>
+              <span className="font-medium">30%</span>
+            </div>
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-green-500 rounded-full" style={{ width: "30%" }} />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center mt-6">
+          <div className="flex -space-x-2">
+            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">
+              GH
+            </div>
+            <div className="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs">
+              LC
+            </div>
+            <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
+              HR
+            </div>
+            <div className="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-white text-xs">
+              CF
+            </div>
+          </div>
+          <Button size="sm" variant="outline">
+            <Share className="h-4 w-4 mr-2" />
+            Share Profile
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

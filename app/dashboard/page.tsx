@@ -65,12 +65,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-sm sticky top-0 z-10">
-        <Button variant="ghost" size="sm" className="gap-2" onClick={() => router.push("/")}>
-          <ArrowLeft className="h-4 w-4" />
-          Back to Home
-        </Button>
-      </header>
 
       <main className="container max-w-7xl px-4 py-8">
         <div className="mb-8">
