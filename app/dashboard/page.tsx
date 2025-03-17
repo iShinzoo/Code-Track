@@ -10,6 +10,7 @@ import { LeetCodeStats } from "@/components/leetcode-stats"
 import { HackerRankStats } from "@/components/hackerrank-stats"
 import { fetchAllPlatformData } from "@/lib/api-service"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import ThemeToggle from "@/components/theme-toggle"
 
 export default function DashboardPage() {
   const searchParams = useSearchParams()
@@ -66,10 +67,13 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
       <header className="px-4 lg:px-6 h-16 flex items-center border-b bg-background/80 backdrop-blur-sm sticky top-0 z-10">
+      <div className="container max-w-6xl flex justify-between">
         <Button variant="ghost" size="sm" className="gap-2" onClick={() => router.push("/")}>
           <ArrowLeft className="h-4 w-4" />
           Back to Home
         </Button>
+        <ThemeToggle/>
+      </div>
       </header>
 
       <main className="container max-w-7xl px-4 py-8">

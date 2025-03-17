@@ -19,9 +19,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeProvider>
-          <div className="flex justify-end p-4 nab">
-            <ThemeToggle />
-          </div>
           {children}
         </ThemeProvider>
         <Analytics />

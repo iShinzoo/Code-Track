@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { DashboardPreview } from "@/components/dashboard-preview"
+import ThemeToggle from "@/components/theme-toggle"
 
 export default function Home() {
   const router = useRouter()
@@ -94,7 +95,11 @@ export default function Home() {
                   <span>{isStarred ? "Star on GitHub" : "Star on GitHub"}</span>
                 </Button>
               </li>
+              <li>
+                <ThemeToggle/>
+              </li>
             </ul>
+
           </nav>
         </div>
       </header>
