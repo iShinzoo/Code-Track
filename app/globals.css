@@ -92,12 +92,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-
-.nab{
-  z-index: 15;
-    display: flex;
-    position: fixed;
-    margin-top: -3px;
-    margin-left: 1294px;
-}
