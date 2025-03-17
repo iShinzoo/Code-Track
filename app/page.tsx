@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import type { ReactElement } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { ArrowRight, Github, Code, Trophy, Loader2, Star, Award, BarChart } from "lucide-react"
@@ -15,7 +14,7 @@ import { Label } from "@/components/ui/label"
 import { DashboardPreview } from "@/components/dashboard-preview"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export default function Home() {
+export default function Home(): ReactElement {
   const router = useRouter()
   const [usernames, setUsernames] = useState({
     github: "",
@@ -25,6 +24,13 @@ export default function Home() {
 
   const [isLoading, setIsLoading] = useState(false)
   const [isStarred, setIsStarred] = useState(false)
+
+  useEffect(() => {
+    // This effect ensures proper cleanup of any client-side operations
+    return () => {
+      setIsLoading(false)
+    }
+  }, [])
 
   const handleInputChange = (platform: keyof typeof usernames, value: string) => {
     setUsernames((prev) => ({
@@ -45,6 +51,7 @@ export default function Home() {
 
     // Navigate to dashboard with query params
     setTimeout(() => {
+      setIsLoading(false)
       router.push(`/dashboard?${params.toString()}`)
     }, 1000) // Simulate data fetching with a short delay
   }
@@ -61,228 +68,228 @@ export default function Home() {
 
   return (
     <div className="container max-w-6xl px-4 py-12 md:py-16">
-          <div className="text-center mb-12">
-            <motion.h1
-              className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              Your Coding Journey, All in One Place
-            </motion.h1>
-            <motion.p
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              Connect your coding platforms, showcase your skills, and share your progress with the world.
-            </motion.p>
-          </div>
+      <div className="text-center mb-12">
+        <motion.h1
+          className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Your Coding Journey, All in One Place
+        </motion.h1>
+        <motion.p
+          className="text-xl text-muted-foreground max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          Connect your coding platforms, showcase your skills, and share your progress with the world.
+        </motion.p>
+      </div>
 
-          <motion.div
-            className="grid md:grid-cols-2 gap-12 items-start"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <div>
-              <Tabs defaultValue="connect" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-8">
-                  <TabsTrigger value="connect">Connect Platforms</TabsTrigger>
-                  <TabsTrigger value="features">Features</TabsTrigger>
-                </TabsList>
+      <motion.div
+        className="grid md:grid-cols-2 gap-12 items-start"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div>
+          <Tabs defaultValue="connect" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
+              <TabsTrigger value="connect">Connect Platforms</TabsTrigger>
+              <TabsTrigger value="features">Features</TabsTrigger>
+            </TabsList>
 
-                <TabsContent value="connect" className="space-y-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Connect Your Coding Platforms</CardTitle>
-                      <CardDescription>Enter your usernames for the platforms you want to track</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="github-username" className="flex items-center gap-2">
-                              <Github className="h-4 w-4" />
-                              GitHub Username
-                            </Label>
-                            <Input
-                              id="github-username"
-                              placeholder="e.g., iShinzoo"
-                              value={usernames.github}
-                              onChange={(e) => handleInputChange("github", e.target.value)}
-                            />
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label htmlFor="leetcode-username" className="flex items-center gap-2">
-                              <Code className="h-4 w-4" />
-                              LeetCode Username
-                            </Label>
-                            <Input
-                              id="leetcode-username"
-                              placeholder="e.g., leetcoder"
-                              value={usernames.leetcode}
-                              onChange={(e) => handleInputChange("leetcode", e.target.value)}
-                            />
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label htmlFor="hackerrank-username" className="flex items-center gap-2">
-                              <Trophy className="h-4 w-4" />
-                              HackerRank Username
-                            </Label>
-                            <Input
-                              id="hackerrank-username"
-                              placeholder="e.g., hacker123"
-                              value={usernames.hackerrank}
-                              onChange={(e) => handleInputChange("hackerrank", e.target.value)}
-                            />
-                          </div>
-                          </div>
-
-                        <Button
-                          type="submit"
-                          className="w-full"
-                          disabled={isLoading || Object.values(usernames).every((v) => !v)}
-                        >
-                          {isLoading ? (
-                            <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Generating Profile...
-                            </>
-                          ) : (
-                            <>
-                              Create My Coding Profile
-                              <ArrowRight className="ml-2 h-4 w-4" />
-                            </>
-                          )}
-                        </Button>
-                      </form>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-
-                <TabsContent value="features" className="space-y-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Why Use CodeTrack?</CardTitle>
-                      <CardDescription>The ultimate platform to showcase your coding journey</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div className="flex items-start gap-4">
-                        <div className="bg-primary/10 p-2 rounded-lg">
-                          <BarChart className="h-5 w-5 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Unified Statistics</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Track your progress across multiple coding platforms in one dashboard
-                          </p>
-                        </div>
+            <TabsContent value="connect" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Connect Your Coding Platforms</CardTitle>
+                  <CardDescription>Enter your usernames for the platforms you want to track</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="github-username" className="flex items-center gap-2">
+                          <Github className="h-4 w-4" />
+                          GitHub Username
+                        </Label>
+                        <Input
+                          id="github-username"
+                          placeholder="e.g., iShinzoo"
+                          value={usernames.github}
+                          onChange={(e) => handleInputChange("github", e.target.value)}
+                        />
                       </div>
 
-                      <div className="flex items-start gap-4">
-                        <div className="bg-primary/10 p-2 rounded-lg">
-                          <Code className="h-5 w-5 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Language Proficiency</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Visualize your programming language expertise based on your repositories and submissions
-                          </p>
-                        </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="leetcode-username" className="flex items-center gap-2">
+                          <Code className="h-4 w-4" />
+                          LeetCode Username
+                        </Label>
+                        <Input
+                          id="leetcode-username"
+                          placeholder="e.g., leetcoder"
+                          value={usernames.leetcode}
+                          onChange={(e) => handleInputChange("leetcode", e.target.value)}
+                        />
                       </div>
 
-                      <div className="flex items-start gap-4">
-                        <div className="bg-primary/10 p-2 rounded-lg">
-                          <Trophy className="h-5 w-5 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Achievement Tracking</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Showcase your badges, certifications, and accomplishments from all platforms
-                          </p>
-                        </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="hackerrank-username" className="flex items-center gap-2">
+                          <Trophy className="h-4 w-4" />
+                          HackerRank Username
+                        </Label>
+                        <Input
+                          id="hackerrank-username"
+                          placeholder="e.g., hacker123"
+                          value={usernames.hackerrank}
+                          onChange={(e) => handleInputChange("hackerrank", e.target.value)}
+                        />
                       </div>
+                    </div>
 
-                      <div className="flex items-start gap-4">
-                        <div className="bg-primary/10 p-2 rounded-lg">
-                          <Share className="h-5 w-5 text-primary" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Shareable Profiles</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Generate beautiful cards and PDFs to share your coding journey with others
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </div>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={isLoading || Object.values(usernames).every((v) => !v)}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Generating Profile...
+                        </>
+                      ) : (
+                        <>
+                          Create My Coding Profile
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-3xl opacity-50" />
-              <div className="relative">
-                <ProfilePreview />
-              </div>
-            </div>
-          </motion.div>
-          <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="relative lg:h-[600px] flex items-center justify-center"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-3xl opacity-50" />
-              <DashboardPreview className="relative z-10 scale-90 lg:scale-100" />
-            </motion.div>
+            <TabsContent value="features" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Why Use CodeTrack?</CardTitle>
+                  <CardDescription>The ultimate platform to showcase your coding journey</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary/10 p-2 rounded-lg">
+                      <BarChart className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">Unified Statistics</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Track your progress across multiple coding platforms in one dashboard
+                      </p>
+                    </div>
+                  </div>
 
-          <div className="mt-20">
-            <h2 className="text-2xl font-bold text-center mb-10">Supported Platforms</h2>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              <PlatformCard
-                name="GitHub"
-                icon={<Github className="h-8 w-8" />}
-                color="bg-gray-900"
-                description="Track repositories, contributions, and stars"
-              />
-              <PlatformCard
-                name="LeetCode"
-                icon={<Code className="h-8 w-8" />}
-                color="bg-yellow-500"
-                description="Monitor problem-solving progress and contest ratings"
-              />
-              <PlatformCard
-                name="HackerRank"
-                icon={<Award className="h-8 w-8" />}
-                color="bg-green-600"
-                description="Showcase certifications and badges"
-              />
-              <PlatformCard
-                name="CodeChef"
-                icon={<Code className="h-8 w-8" />}
-                color="bg-yellow-600"
-                description="Display contest ratings and achievements"
-              />
-              <PlatformCard
-                name="Codeforces"
-                icon={<BarChart className="h-8 w-8" />}
-                color="bg-blue-600"
-                description="Track competitive programming progress"
-              />
-            </div>
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary/10 p-2 rounded-lg">
+                      <Code className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">Language Proficiency</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Visualize your programming language expertise based on your repositories and submissions
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary/10 p-2 rounded-lg">
+                      <Trophy className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">Achievement Tracking</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Showcase your badges, certifications, and accomplishments from all platforms
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary/10 p-2 rounded-lg">
+                      <Share className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-medium">Shareable Profiles</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Generate beautiful cards and PDFs to share your coding journey with others
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-3xl opacity-50" />
+          <div className="relative">
+            <ProfilePreview />
           </div>
         </div>
-    )
-  }
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="relative lg:h-[600px] flex items-center justify-center"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-3xl blur-3xl opacity-50" />
+        <DashboardPreview className="relative z-10 scale-90 lg:scale-100" />
+      </motion.div>
 
-  function Share(props: any) {
-    return (
-      <svg
+      <div className="mt-20">
+        <h2 className="text-2xl font-bold text-center mb-10">Supported Platforms</h2>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+          <PlatformCard
+            name="GitHub"
+            icon={<Github className="h-8 w-8" />}
+            color="bg-gray-900"
+            description="Track repositories, contributions, and stars"
+          />
+          <PlatformCard
+            name="LeetCode"
+            icon={<Code className="h-8 w-8" />}
+            color="bg-yellow-500"
+            description="Monitor problem-solving progress and contest ratings"
+          />
+          <PlatformCard
+            name="HackerRank"
+            icon={<Award className="h-8 w-8" />}
+            color="bg-green-600"
+            description="Showcase certifications and badges"
+          />
+          <PlatformCard
+            name="CodeChef"
+            icon={<Code className="h-8 w-8" />}
+            color="bg-yellow-600"
+            description="Display contest ratings and achievements"
+          />
+          <PlatformCard
+            name="Codeforces"
+            icon={<BarChart className="h-8 w-8" />}
+            color="bg-blue-600"
+            description="Track competitive programming progress"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Share(props: any) {
+  return (
+    <svg
       {...props}
       xmlns="http://www.w3.org/2000/svg"
       width="24"

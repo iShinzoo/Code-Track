@@ -21,7 +21,7 @@ export function Navbar() {
         </a>
         <div className="flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 px-2 py-1 rounded-full text-xs font-medium">
           <Star className="h-3 w-3 fill-yellow-500" />
-          <span>5 stars</span>
+          <span>star it.</span>
         </div>
         <ThemeToggle />
       </div>
